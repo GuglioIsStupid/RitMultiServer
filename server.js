@@ -95,6 +95,9 @@ process.on('uncaughtException', (err) => {
 });
 
 server.on('connection', (socket) => {
+  // if nothing, return an html page
+  socket.setEncoding('utf8');
+  socket.write('HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n');
   socket.setNoDelay(true);
   socket.setKeepAlive(true, 300 * 1000);
   socket.isConnected = true;
