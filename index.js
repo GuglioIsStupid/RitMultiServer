@@ -162,7 +162,7 @@ server.on('connection', (socket) => {
 
         if (obj.action === "getServers") {
             console.log("Sending servers to client");
-            json = `{"servers": ${JSON.stringify(servers)}, "action": "gotServers"}`
+            json = `{"servers": ${JSON.stringify(servers)}, "action": "gotServers", "user": ${JSON.stringify(obj.user)}}`
         } else if (obj.action === "updateServerInfo_USERJOINED") {
             console.log("User joined server");
             // add user to server
