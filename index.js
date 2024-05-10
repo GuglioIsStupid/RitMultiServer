@@ -31,6 +31,17 @@ let servers = [
     }
 ]
 
+const specialUsers = [
+  {
+    steamID: "76561199160040831ULL",
+    tags: [
+        "Admin",
+        "Developer",
+        "Owner"
+    ]
+  }
+]
+
 if (cfg.wsPort) {
   function sendAsTcpMessage(payload, channel) {
     const channelSockets = sockets[channel];
@@ -135,7 +146,17 @@ server.on('connection', (socket) => {
         } else if (obj.action === "updateServerInfo_USERJOINED") {
             console.log("User joined server");
             // add user to server
-            servers[obj.id].players.push(obj.user);
+            var user = obj.user; 
+            if (user.tags === undefined) {
+                user.tags = [];
+            }
+            for (var i = 0; i < specialUsers.length; i++) {
+                if (specialUsers[i].steamID === user.steamID) {
+                    user.tags = specialUsers[i].tags;
+                    break;
+                }
+            }
+            servers[obj.id].players.push(user);
             console.log("SERVER ID: " + obj.id);
 
             json = `{"action": "updateServerInfo_USERJOINED", "id": ${obj.id}, "user": ${JSON.stringify(obj.user)}, "server": ${JSON.stringify(servers[obj.id])}}`
@@ -186,6 +207,18 @@ server.on('connection', (socket) => {
             //console.log("Getting players info for in game");
             // get the server
             var server = servers[obj.id];
+
+            if (obj.user.tags === undefined) {
+                obj.user.tags = [];
+            }
+
+            // check if the user is a special user
+            for (var i = 0; i < specialUsers.length; i++) {
+                if (specialUsers[i].steamID === obj.user.steamID) {
+                    obj.user.tags = specialUsers[i].tags;
+                    break;
+                }
+            }
             
             // update the player
             for (var i = 0; i < server.players.length; i++) {
@@ -222,6 +255,15 @@ server.on('connection', (socket) => {
           // replace the user in the server
           for (var i = 0; i < server.players.length; i++) {
             if (server.players[i].steamID === obj.user.steamID) {
+                if (obj.user.tags === undefined) {
+                    obj.user.tags = [];
+                }
+                for (var j = 0; j < specialUsers.length; j++) {
+                    if (specialUsers[j].steamID === obj.user.steamID) {
+                        obj.user.tags = specialUsers[j].tags;
+                        break;
+                    }
+                }
               server.players[i] = obj.user;
               break;
             }
