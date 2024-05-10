@@ -15,32 +15,17 @@ let sendAsWsMessage;
 let servers = [
     // id will be automatically generated, but for servers that stay, we can set it manually
     {
-        name: "Testing Lobby",
+        name: "Big Lobby", // Average4k reference :scream:
         staysOpen: true, // Doesn't close when empty
-        maxPlayers: 4,
+        maxPlayers: 100,
         players: [],
         host: null,
         password: null,
         hasPassword: false,
         id: 0,
         currentSong: {
-            songName: "Time Traveler",
-            songDiff: "The Future ~"
-        },
-        started: false,
-    },
-    {
-        name: "Testing Lobby 2",
-        staysOpen: true, // Doesn't close when empty
-        maxPlayers: 2,
-        players: [],
-        host: null,
-        password: null,
-        hasPassword: false,
-        id: 1,
-        currentSong: {
-            songName: "FREEDOM DiVE",
-            songDiff: "4K Another"
+          songName: " Flight of the Bumblebee",
+          songDiff: " Insane"
         },
         started: false,
     }
