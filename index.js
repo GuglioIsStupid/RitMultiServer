@@ -56,8 +56,8 @@ let servers = [
         hasPassword: false,
         id: 1,
         currentSong: {
-            songName: " Purple People Eater",
-            songDiff: " Bouncy Purple People Eater"
+            songName: " Another Me",
+            songDiff: " An Other Me"
         },
         started: false,
     }
@@ -160,6 +160,7 @@ server.on('connection', (socket) => {
         str = str.substr(end + 13); // cut the message and remove the precedant part of the buffer since it can't be processed
         socket.buffer.len = socket.buffer.write(str, 0);
 
+        // ALWAYS return the user
         if (obj.action === "getServers") {
             console.log("Sending servers to client");
             json = `{"servers": ${JSON.stringify(servers)}, "action": "gotServers", "user": ${JSON.stringify(obj.user)}}`
@@ -221,6 +222,34 @@ server.on('connection', (socket) => {
             servers[obj.id] = server;
 
             json = `{"action": "getPlayersInfo_INGAME", "id": ${obj.id}, "user": ${JSON.stringify(obj.user)}, "server": ${JSON.stringify(server)}}`
+        } else if (obj.action === "startGame") {
+          console.log("Starting game");
+          json = `{"action": "startGame", "id": ${obj.id}, "server": ${JSON.stringify(servers[obj.id])}}`
+          //console.log(json);
+        } else if (obj.action === "resultScreen_NEWENTRY") {
+          /*
+          action = "resultScreen_NEWENTRY",
+                id = love.timer.getTime(),
+                user = {
+                    steamID = tostring(SteamID),
+                    name = tostring(SteamUserName),
+                    score = results.score,
+                    accuracy = results.accuracy,
+                    completed = true
+                }
+                */
+          console.log(obj.id);
+          var server = servers[obj.id];
+          
+          // replace the user in the server
+          for (var i = 0; i < server.players.length; i++) {
+            if (server.players[i].steamID === obj.user.steamID) {
+              server.players[i] = obj.user;
+              break;
+            }
+          }
+
+          json = `{"action": "resultScreen_NEWENTRY", "id": ${obj.id}, "user": ${JSON.stringify(obj.user)}, "server": ${JSON.stringify(server)}}`
         }
         //console.log(json);
 
