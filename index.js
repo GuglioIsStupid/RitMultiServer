@@ -4,7 +4,7 @@ const cfg = {
   port: 1337,
   wsPort: 2337, // comment out if you don't need websocket bridge
   buffer_size: 1024 * 16, // buffer allocated per each socket client
-  sendOwnMessagesBack: false // if disabled, clients don't get their own messages back
+  sendOwnMessagesBack: true // if disabled, clients don't get their own messages back
   // verbose: true, // set to true to capture lots of debug info
 };
 
