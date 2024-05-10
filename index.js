@@ -28,6 +28,7 @@ let servers = [
           songDiff: " An Other Me"
         },
         started: false,
+        chatMessages: []
     },
     {
         name: "Big Lobby 2",
@@ -43,6 +44,7 @@ let servers = [
           songDiff: "4K Another"
         },
         started: false,
+        chatMessages: []
     },
 ]
 
@@ -222,7 +224,7 @@ server.on('connection', (socket) => {
                     servers[i].started = false;
                 }
             }
-            json = `{"action": "updateServerInfo_FORCEREMOVEUSER", "user": ${JSON.stringify(obj.user)}, "servers": ${JSON.stringify(servers)}}`
+            json = `{"action": "updateServerInfo_FORCEREMOVEUSER", "user": ${JSON.stringify(obj.user)}, "servers": ${JSON.stringify(servers)}, "id": ${obj.id}}`
         } else if (obj.action === "getPlayersInfo_INGAME") {
             // Also updates the currents player info
             //console.log("Getting players info for in game");
