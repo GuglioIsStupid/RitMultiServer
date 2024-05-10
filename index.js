@@ -44,7 +44,22 @@ let servers = [
           songDiff: "4K Another"
         },
         started: false,
-        chatMessages: []
+        chatMessages: [ // stays sorted by time (newest last) as it would be displayed in the game. Only keep the last 25 messages
+          /*
+            {
+              user: {
+                steamID: "76561199160040831ULL",
+                name: "GuglioIsStupid",
+                tags: [
+                    "Admin",
+                    "Developer",
+                    "Owner"
+                ]
+              },
+              message: "Hello!"
+            }
+          */
+        ]
     },
 ]
 
@@ -299,6 +314,34 @@ server.on('connection', (socket) => {
           server.started = obj.started;
           servers[obj.id] = server;
           json = `{"action": "updateServerInfo_INGAME_STARTEND", "id": ${obj.id}, "started": ${obj.started}, "server": ${JSON.stringify(server)}}`
+        } else if (obj.action === "serverLobby_CHATMESSAGE") {
+          var server = servers[obj.id];
+          var user = obj.user;
+          
+          if (user.tags === undefined) {
+              user.tags = [];
+          }
+          for (var i = 0; i < specialUsers.length; i++) {
+              if (specialUsers[i].steamID === user.steamID) {
+                  user.tags = specialUsers[i].tags;
+                  break;
+              }
+          }
+
+          server.chatMessages.push({
+            user: user,
+            message: obj.message
+          });
+
+          if (server.chatMessages.length > 25) {
+            server.chatMessages.shift();
+          }
+
+          servers[obj.id] = server;
+
+          console.log(server.chatMessages);
+
+          json = `{"action": "serverLobby_CHATMESSAGE", "id": ${obj.id}, "user": ${JSON.stringify(user)}, "message": "${obj.message}", "server": ${JSON.stringify(server)}}`
         }
         //console.log(json);
 
