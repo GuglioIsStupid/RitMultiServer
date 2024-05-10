@@ -30,14 +30,14 @@ let servers = [
         started: false,
     },
     {
-        name: "Big Lobby 2", // Average4k reference :scream:
-        staysOpen: true, // Doesn't close when empty
+        name: "Big Lobby 2",
+        staysOpen: true,
         maxPlayers: 100,
         players: [],
         host: null,
         password: null,
         hasPassword: false,
-        id: 0,
+        id: 1,
         currentSong: {
           songName: " Another Me",
           songDiff: " An Other Me"
