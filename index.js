@@ -4,7 +4,7 @@ const cfg = {
   port: 1337,
   wsPort: 2337, // comment out if you don't need websocket bridge
   buffer_size: 1024 * 16, // buffer allocated per each socket client
-  sendOwnMessagesBack: true // if disabled, clients don't get their own messages back
+  sendOwnMessagesBack: false // if disabled, clients don't get their own messages back
   // verbose: true, // set to true to capture lots of debug info
 };
 
@@ -38,6 +38,12 @@ const specialUsers = [
         "Admin",
         "Developer",
         "Owner"
+    ]
+  },
+  {
+    steamID: "76561199068597113ULL",
+    tags: [
+        "Mod"
     ]
   }
 ]
@@ -141,10 +147,10 @@ server.on('connection', (socket) => {
 
         // ALWAYS return the user
         if (obj.action === "getServers") {
-            console.log("Sending servers to client");
+            //console.log("Sending servers to client");
             json = `{"servers": ${JSON.stringify(servers)}, "action": "gotServers", "user": ${JSON.stringify(obj.user)}}`
         } else if (obj.action === "updateServerInfo_USERJOINED") {
-            console.log("User joined server");
+            //console.log("User joined server");
             // add user to server
             var user = obj.user; 
             if (user.tags === undefined) {
@@ -157,7 +163,7 @@ server.on('connection', (socket) => {
                 }
             }
             servers[obj.id].players.push(user);
-            console.log("SERVER ID: " + obj.id);
+            //console.log("SERVER ID: " + obj.id);
 
             json = `{"action": "updateServerInfo_USERJOINED", "id": ${obj.id}, "user": ${JSON.stringify(obj.user)}, "server": ${JSON.stringify(servers[obj.id])}}`
         } else if (obj.action === "updateServerInfo_USERLEFT") {
@@ -175,7 +181,7 @@ server.on('connection', (socket) => {
                 i++;
             }
 
-            console.log(servers[obj.id].players);
+            //console.log(servers[obj.id].players);
 
             if (servers[obj.id].players.length === 0) {
                 servers[obj.id].started = false;
@@ -184,7 +190,7 @@ server.on('connection', (socket) => {
             json = `{"action": "updateServerInfo_USERLEFT", "id": ${obj.id}, "server": ${JSON.stringify(servers[obj.id])}}`
         } else if (obj.action === "updateServerInfo_FORCEREMOVEUSER") {
             // goes into every server and removes the user from the players array
-            console.log("Forcing user to leave server");
+            //console.log("Forcing user to leave server");
             for (var i = 0; i < servers.length; i++) {
                 var j = 0;
                 while (j < servers[i].players.length) {
@@ -234,7 +240,7 @@ server.on('connection', (socket) => {
 
             json = `{"action": "getPlayersInfo_INGAME", "id": ${obj.id}, "user": ${JSON.stringify(obj.user)}, "server": ${JSON.stringify(server)}}`
         } else if (obj.action === "startGame") {
-          console.log("Starting game");
+          //console.log("Starting game");
           json = `{"action": "startGame", "id": ${obj.id}, "server": ${JSON.stringify(servers[obj.id])}}`
           //console.log(json);
         } else if (obj.action === "resultScreen_NEWENTRY") {
@@ -249,7 +255,7 @@ server.on('connection', (socket) => {
                     completed = true
                 }
                 */
-          console.log(obj.id);
+          //console.log(obj.id);
           var server = servers[obj.id];
           
           // replace the user in the server
@@ -332,13 +338,13 @@ function _destroySocket(socket) {
 
 server.on('listening', () => {
   console.log(
-    `NoobHub on ${server.address().address}:${server.address().port}`
+    `RUNNING SERVER on ${server.address().address}:${server.address().port}`
   );
 });
 
 // looping function (every 60 seconds) to check if servers are empty and if they are, close them
 setInterval(() => {
-  console.log("Checking servers");
+  //console.log("Checking servers");
   for (var i = 0; i < servers.length; i++) {
     if (servers[i].players.length === 0 && servers[i].staysOpen === false) {
       servers.splice(i, 1);
