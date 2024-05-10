@@ -1,20 +1,3 @@
-/**
- * NoobHub node.js server
- * Opensource multiplayer and network messaging for CoronaSDK, Moai, Gideros & LÖVE
- *
- * @usage
- * $ nodejs node.js
- *
- * @authors
- * Igor Korsakov
- * Sergii Tsegelnyk
- *
- * @license WTFPL
- *
- * https://github.com/Overtorment/NoobHub
- *
- **/
-
 const net = require('net');
 
 const cfg = {
