@@ -24,8 +24,8 @@ let servers = [
         hasPassword: false,
         id: 0,
         currentSong: {
-          songName: " Flight of the Bumblebee",
-          songDiff: " Insane"
+          songName: " Failure Girl [inabakumori Remix]",
+          songDiff: " problematic"
         },
         started: false,
     }
