@@ -156,6 +156,10 @@ server.on('connection', (socket) => {
 
             console.log(servers[obj.id].players);
 
+            if (servers[obj.id].players.length === 0) {
+                servers[obj.id].started = false;
+            }
+
             json = `{"action": "updateServerInfo_USERLEFT", "id": ${obj.id}, "server": ${JSON.stringify(servers[obj.id])}}`
         } else if (obj.action === "updateServerInfo_FORCEREMOVEUSER") {
             // goes into every server and removes the user from the players array
@@ -168,6 +172,12 @@ server.on('connection', (socket) => {
                         break;
                     }
                     j++;
+                }
+            }
+
+            for (var i = 0; i < servers.length; i++) {
+                if (servers[i].players.length === 0) {
+                    servers[i].started = false;
                 }
             }
             json = `{"action": "updateServerInfo_FORCEREMOVEUSER", "user": ${JSON.stringify(obj.user)}, "servers": ${JSON.stringify(servers)}}`
@@ -283,5 +293,15 @@ server.on('listening', () => {
     `NoobHub on ${server.address().address}:${server.address().port}`
   );
 });
+
+// looping function (every 60 seconds) to check if servers are empty and if they are, close them
+setInterval(() => {
+  console.log("Checking servers");
+  for (var i = 0; i < servers.length; i++) {
+    if (servers[i].players.length === 0 && servers[i].staysOpen === false) {
+      servers.splice(i, 1);
+    }
+  }
+}, 60000);
 
 server.listen(cfg.port, '::');
