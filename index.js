@@ -39,8 +39,8 @@ let servers = [
         hasPassword: false,
         id: 1,
         currentSong: {
-          songName: " Another Me",
-          songDiff: " An Other Me"
+          songName: "FREEDOM DiVE",
+          songDiff: "4K Another"
         },
         started: false,
     },
