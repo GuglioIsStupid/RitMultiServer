@@ -24,8 +24,8 @@ let servers = [
         hasPassword: false,
         id: 0,
         currentSong: {
-          songName: " Failure Girl [inabakumori Remix]",
-          songDiff: " problematic"
+          songName: " Another Me",
+          songDiff: " An Other Me"
         },
         started: false,
     }
@@ -218,6 +218,12 @@ server.on('connection', (socket) => {
           }
 
           json = `{"action": "resultScreen_NEWENTRY", "id": ${obj.id}, "user": ${JSON.stringify(obj.user)}, "server": ${JSON.stringify(server)}}`
+        } else if (obj.action === "updateServerInfo_INGAME_STARTEND") {
+          // find server from obj.id
+          var server = servers[obj.id];
+          server.started = obj.started;
+          servers[obj.id] = server;
+          json = `{"action": "updateServerInfo_INGAME_STARTEND", "id": ${obj.id}, "started": ${obj.started}, "server": ${JSON.stringify(server)}}`
         }
         //console.log(json);
 
