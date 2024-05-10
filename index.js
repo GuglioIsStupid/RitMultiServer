@@ -28,7 +28,22 @@ let servers = [
           songDiff: " An Other Me"
         },
         started: false,
-    }
+    },
+    {
+        name: "Big Lobby 2", // Average4k reference :scream:
+        staysOpen: true, // Doesn't close when empty
+        maxPlayers: 100,
+        players: [],
+        host: null,
+        password: null,
+        hasPassword: false,
+        id: 0,
+        currentSong: {
+          songName: " Another Me",
+          songDiff: " An Other Me"
+        },
+        started: false,
+    },
 ]
 
 const specialUsers = [
